@@ -6,10 +6,21 @@
   background-image: url(/games/images/card.jpg);
   background-size: 18px 18px;
 }
-.ui-icon-skull {
-  background-image: url(/games/images/icon-skull.png);
+
+#trophies .ui-btn-icon-notext {
+  width: 32px;
+  height: 32px;
+}
+#trophies .ui-icon {
+  width: 24px;
+  height: 24px;
   background-size: 24px 24px;
 }
+#trophies .ui-btn-icon-notext .ui-btn-inner .ui-icon { margin: 3px 1px 2px 4px; }
+.ui-icon-skull { background-image: url(/games/images/icon-skull.png); }
+.ui-icon-beer { background-image: url(/games/images/icon-beer.png); }
+.ui-icon-coffee { background-image: url(/games/images/icon-coffee.png); }
+.ui-icon-trophy { background-image: url(/games/images/icon-trophy.png); }
 
 #content { text-align: center; }
 
@@ -27,12 +38,15 @@
 }
 
 #profile {
+  margin: 0 auto;
   text-align: left;
-  width: 60%;
+  width: 80%;
 }
-#profile img {
-  margin: 0 10px 0 0;
+#profile-photo {
+  float: left;
+  margin: 0 20px 0 0;
 }
+#profile-info { float: left; }
 
 #stars { text-align: center; }
 
