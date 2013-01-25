@@ -154,6 +154,7 @@
   });
 
   function init() {
+    $(window).scrollTop($('.stage').offset().top);
     $('.stage').append('<div id="catcher"></div>');
     $('.stage').bind('vmousemove', function(e){
       var catcherOffset = $('#catcher').offset().left - $('.stage').offset().left;
