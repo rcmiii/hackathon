@@ -31,6 +31,7 @@
 #coupon {
   font-weight: bold;
   text-align: center;
+  padding: 15px 0;
 }
 
 #purchases {
@@ -66,7 +67,7 @@
   background-image: url(/games/images/bg-raining.png);
   -webkit-user-select: none;
   border: 1px solid #ccc;
-  width: 60%;
+  max-width: 70%;
   height: 480px;
 }
 #catcher {
@@ -115,22 +116,10 @@
 
 @media all and (max-height: 700px) {
   #catcher {
-    width: 54px;
-    height: 27px;
-    background-image: url(/games/images/basket.png);
-    -webkit-user-select: none;
-    position: relative;
     bottom: -295px;
     left: 300px;
   }
-  .stage {
-    margin: auto;
-    background-image: url(/games/images/bg-raining.png);
-    -webkit-user-select: none;
-    border: 1px solid #ccc;
-    width: 60%;
-    height: 320px;
-  }
+  .stage { height: 320px; }
 }
 
 /* puzzle */
