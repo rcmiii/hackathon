@@ -1,0 +1,163 @@
+/* application.css */
+
+#logo { width: 90%; }
+
+.ui-icon-logo {
+  background-image: url(/games/images/card.jpg);
+  background-size: 18px 18px;
+}
+.ui-icon-skull {
+  background-image: url(/games/images/icon-skull.png);
+  background-size: 24px 24px;
+}
+
+#content { text-align: center; }
+
+.game-info { margin: 0 auto 10px auto; }
+.time-under-10 { font-weight: bold; }
+.time-under-5 { color: red; }
+
+#coupon {
+  font-weight: bold;
+  text-align: center;
+}
+
+#purchases {
+  margin: 0 0 30px 0; 
+}
+
+#profile {
+  text-align: left;
+  width: 60%;
+}
+#profile img {
+  margin: 0 10px 0 0;
+}
+
+#stars { text-align: center; }
+
+/* memory */
+
+.ui-grid-c img {
+  border: solid 1px #ccc;
+  cursor: pointer;
+  min-width: 50px;
+  min-height: 50px;
+}
+
+/* raining */
+
+.stage {
+  margin: auto;
+  background-image: url(/games/images/bg-raining.png);
+  border: 1px solid #ccc;
+  width: 60%;
+  height: 480px;
+}
+#catcher {
+  width: 54px;
+  height: 27px;
+  background-image: url(/games/images/basket.png);
+  position: relative;
+  bottom: -440px;
+  left: 300px;
+}
+.animal {
+  height: 54px;
+  width: 54px;
+  position: absolute;
+  top: 141px;
+  left: 300px;
+  -webkit-transform: translateZ(0);
+}
+.animal0 {
+  background-image: url(/games/images/coupon2.png);
+  background-size: 54px 54px;
+  -webkit-transition: top 2s linear;
+}
+.animal1 {
+  background-image: url(/games/images/puppy1.png);
+  background-size: 54px 54px;
+  -webkit-transition: top 1.5s linear;
+}
+.animal2 {
+  background-image: url(/games/images/kitten1.png);
+  background-size: 54px 54px;
+  -webkit-transition: top 1.25s linear;
+}
+.animal3 {
+  background-image: url(/games/images/puppy2.png);
+  background-size: 54px 54px;
+  -webkit-transition: top 1s linear;
+}
+.animal4 {
+  background-image: url(/games/images/kitten2.png);
+  background-size: 54px 54px;
+  -webkit-transition: top .8s linear;
+}
+.falling { top: 700px; }
+
+@media all and (max-height: 700px) {
+  #catcher {
+    width: 54px;
+    height: 27px;
+    background-image: url(/games/images/basket.png);
+    position: relative;
+    bottom: -295px;
+    left: 300px;
+  }
+  .stage {
+    margin: auto;
+    background-image: url(/games/images/bg-raining.png);
+    border: 1px solid #ccc;
+    width: 60%;
+    height: 320px;
+  }
+}
+
+/* puzzle */
+
+.puzzle {
+  max-width: 570px;
+  max-height: 570px;
+  margin: 0 auto;
+}
+.puzzle * { margin: 0; padding: 0; }
+.puzzle_block img {
+  cursor: pointer;
+  width: 98%;
+  height: 100%;
+}
+.puzzle_block img:hover { -webkit-filter: brightness(-25%); }
+.tween {
+  position: absolute;
+  z-index: 5;
+}
+
+/* media */
+
+@media all and (min-width: 320px) {
+  .ui-grid-c img {
+    max-width: 70px;
+    max-height: 70px;
+  }
+}
+@media all and (min-width: 400px) {
+  .ui-grid-c img {
+    max-width: 90px;
+    max-height: 90px;
+  }
+}
+@media all and (min-width: 600px) {
+  .ui-grid-c img {
+    max-width: 140px;
+    max-height: 140px;
+  }
+}
+@media all and (min-width: 800px) {
+  .ui-grid-c img {
+    max-width: 190px;
+    max-height: 190px;
+  }
+}
+

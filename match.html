@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Purina Carnival</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+  <link rel="stylesheet" href="/games/css/application.css" />
+  <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+  <script>
+    $(document).bind('mobileinit', function() {
+      $.mobile.ajaxEnabled = false;
+    });
+  </script>
+  <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+  <script src="/games/js/application.js"></script>
+</head>
+<body>
+
+<div data-role="page" data-add-back-btn="true">
+
+  <div data-role="header" data-position="fixed">
+    <h1 class="ui-title" role="heading" aria-level="1">Purina Cats vs. Dogs</h1>
+    <a href="/games" data-icon="logo" data-iconpos="notext">Home</a>
+  </div>
+
+  <div data-role="content" id="content">
+  
+    <button id="start" data-theme="e">Start</button>
+    
+    <div class="game-info">
+      Moves: <span id="moves"></span>&nbsp;&nbsp;&nbsp;
+      Time: <span id="time"></span>
+    </div>
+    
+    <div class="ui-grid-c">
+      <div class="ui-block-a" id="block-0"></div>
+      <div class="ui-block-b" id="block-1"></div>
+      <div class="ui-block-c" id="block-2"></div>
+      <div class="ui-block-d" id="block-3"></div>
+      <div class="ui-block-a" id="block-4"></div>
+      <div class="ui-block-b" id="block-5"></div>
+      <div class="ui-block-c" id="block-6"></div>
+      <div class="ui-block-d" id="block-7"></div>
+      <div class="ui-block-a" id="block-8"></div>
+      <div class="ui-block-b" id="block-9"></div>
+      <div class="ui-block-c" id="block-10"></div>
+      <div class="ui-block-d" id="block-11"></div>
+    </div>
+    
+    <div id="times-up" data-role="popup" data-overlay-theme="a" data-theme="c">
+      <div data-role="header" data-theme="a" class="ui-corner-top">
+        <h1>Game Over</h1>
+      </div>
+      <div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
+        <h3 class="ui-title">Sorry, your time has expired. Better luck next time!</h3>
+        <div data-role="controlgroup">
+          <a href="/games/memory.html" data-role="button" data-theme="b">Practice</a>    
+          <a href="/games" data-role="button" data-theme="c">More Games</a>
+        </div>  
+      </div>
+    </div>
+    
+    <div id="winner" data-role="popup" data-overlay-theme="a" data-theme="c">
+      <div data-role="header" data-theme="a" class="ui-corner-top">
+        <h1>Game Over</h1>
+      </div>
+      <div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
+        <h3 class="ui-title">Congratulations, you're a winner!</h3>
+        <div id="stars">
+          <div data-role="button" data-icon="star" data-theme="c" data-iconpos="notext" data-inline="true" id="star-1"></div>
+          <div data-role="button" data-icon="star" data-theme="c" data-iconpos="notext" data-inline="true" id="star-2"></div>
+          <div data-role="button" data-icon="star" data-theme="c" data-iconpos="notext" data-inline="true" id="star-3"></div>
+        </div>
+        <div id="coupon">
+          <img src="/games/images/coupon1.png" width="200" height="200" /><br />
+          <span id="coupon-value"></span> off Chef Michael's&reg; Dry Dog Food
+        </div>
+        <div data-role="controlgroup">
+          <a href="#" data-role="button" data-theme="e">Clip Coupon</a>
+          <a href="#" data-role="button" data-theme="b">Share</a>
+        </div>
+        <a href="/games" data-role="button" data-theme="c">More Games</a>  
+      </div>
+    </div>
+    
+  </div>
+  
+</div>
+
+<script>
+  $(document).bind('pageinit', function () {
+    var TIME  = 30;
+    var $TIME = $('#time');
+    $TIME.text(TIME);
+    var TIMER = null;
+    
+    function startTimer(callback) {
+      TIMER = setInterval(function () {
+        TIME--;
+        $TIME.text(TIME);
+        
+        if (TIME <= 10) { $TIME.addClass('time-under-10'); }
+        if (TIME <= 5)  { $TIME.addClass('time-under-5'); }
+        if (TIME == 0)  {
+          stopTimer(TIMER);
+          callback();
+        }
+      }, 1000);
+    }
+    function stopTimer(timer) { clearInterval(timer); }
+    
+    var MOVES  = 0;
+    var $MOVES = $('#moves');
+    $MOVES.text(MOVES);
+    
+    var CARD = "/games/images/card.jpg";
+    
+    var IMAGES = [
+      "/games/images/puppy1.png",
+      "/games/images/puppy2.png",
+      "/games/images/kitten1.png",
+      "/games/images/kitten2.png",
+      "/games/images/puppykitten.png",
+      "/games/images/coupon1.png"
+    ];
+    
+    var $BLOCKS = $('div[id^="block-"]');
+    var BLOCKS  = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+    BLOCKS.shuffle();
+    
+    for (i = 0; i < BLOCKS.length; i++) {
+      $('#block-' + i).html('<img src="' + CARD + '" />');
+    }
+    
+    for (i = 0; i < BLOCKS.length; i++) {
+      switch (i) {
+        case 0: case 1:
+          $('#block-' + BLOCKS[i]).attr('data-img', IMAGES[0]);
+          break;
+        case 2: case 3:
+          $('#block-' + BLOCKS[i]).attr('data-img', IMAGES[1]);
+          break;
+        case 4: case 5:
+          $('#block-' + BLOCKS[i]).attr('data-img', IMAGES[2]);
+          break;
+        case 6: case 7:
+          $('#block-' + BLOCKS[i]).attr('data-img', IMAGES[3]);
+          break;
+        case 8: case 9:
+          $('#block-' + BLOCKS[i]).attr('data-img', IMAGES[4]);
+          break;
+        case 10: case 11:
+          $('#block-' + BLOCKS[i]).attr('data-img', IMAGES[5]);
+          break;
+      }
+    }
+    
+    var FLIPPED = false;
+    
+    $('#start').bind('vclick', function () {
+      startTimer(function () {
+        $('#times-up').popup('open');
+        $BLOCKS.unbind('vclick');
+      });
+      $(this).button('disable');
+      
+      $BLOCKS.bind('vclick', function () {
+        var $this = $(this);
+        var image = $this.attr('data-img');
+        
+        if ( ! FLIPPED) {
+          $this
+            .addClass('flipped')
+            .children('img').attr('src', image);
+          FLIPPED = true;
+        } else {
+          MOVES++;
+          $MOVES.text(MOVES);
+          
+          $flipped = $('.flipped');
+          
+          $this.children('img').attr('src', image);
+
+          if ($flipped.attr('data-img') == image) {
+            $this.addClass('turned').unbind('vclick');
+            $flipped.addClass('turned').unbind('vclick');
+            
+            if ($('.turned').length == BLOCKS.length) {
+              stopTimer(TIMER);
+              
+              var stars  = 1;
+              var coupon = '50&cent;';
+              if (TIME > 20 || MOVES < 10) {
+                stars  = 3;
+                coupon = '$2.00';
+              } else if (TIME > 10 && MOVES < 20) {
+                stars  = 2;
+                coupon = '$1.50';
+              }
+              
+              for (i = 1; i <= stars; i++) {
+                $star = $('#star-' + i);
+                $star.attr('data-theme', 'e');
+                $star.addClass('ui-btn-up-e').removeClass('ui-btn-up-c');
+              }
+              
+              $('#coupon-value').html(coupon);
+              
+              $('#winner').popup('open');
+            }
+          } else {
+            setTimeout(function () {
+              $flipped.children('img').attr('src', CARD);
+              $this.children('img').attr('src', CARD);
+            }, 500);
+          }
+          
+          $flipped.removeClass('flipped');
+          FLIPPED = false;
+        }
+      });
+    })
+    
+  });
+  
+  Array.prototype.shuffle = function () {
+    for (var i = this.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = this[i];
+      this[i] = this[j];
+      this[j] = tmp;
+    }
+    return this;
+  }
+</script>
+
+</body>
+</html>

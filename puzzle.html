@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Purina Carnival</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+  <link rel="stylesheet" href="/games/css/application.css" />
+  <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+  <script>
+    $(document).bind('mobileinit', function() {
+      $.mobile.ajaxEnabled = false;
+    });
+  </script>
+  <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+  <script src="/games/js/application.js"></script>
+</head>
+<body>
+
+<div data-role="page" data-add-back-btn="true">
+
+  <div data-role="header" data-position="fixed">
+    <h1 class="ui-title" role="heading" aria-level="1">Purina Cats vs. Dogs</h1>
+    <a href="/games" data-icon="logo" data-iconpos="notext">Home</a>
+  </div>
+
+  <div data-role="content" id="content">
+
+    <button id="start" data-theme="e">Start</button>
+    
+    <div class="game-info">
+      Moves: <span id="moves"></span>&nbsp;&nbsp;&nbsp;
+      Time: <span id="time"></span>
+    </div>
+    
+    <div class="puzzle ui-grid-b">
+      <div class="puzzle_block occupied ui-block-a" id="block00">
+        <img src="/games/images/cat00.png" id="img00" />
+      </div>
+      <div class="puzzle_block occupied ui-block-b" id="block01">
+        <img src="/games/images/cat01.png" id="img01" />
+      </div>
+      <div class="puzzle_block occupied ui-block-c" id="block02">
+        <img src="/games/images/cat02.png" id="img02" />
+      </div>
+      <div class="puzzle_block occupied ui-block-a" id="block10">
+        <img src="/games/images/cat10.png" id="img10" />
+      </div>
+      <div class="puzzle_block occupied ui-block-b" id="block11">
+        <img src="/games/images/cat11.png" id="img11" />
+      </div>
+      <div class="puzzle_block occupied ui-block-c" id="block12">
+        <img src="/games/images/cat12.png" id="img12" />
+      </div>
+      <div class="puzzle_block occupied ui-block-a" id="block20">
+        <img src="/games/images/cat20.png" id="img20" />
+      </div>
+      <div class="puzzle_block occupied ui-block-b" id="block21">
+        <img src="/games/images/cat21.png" id="img21" />
+      </div>
+      <div class="puzzle_block ui-block-c" id="block22">
+        <img src="/games/images/blank.png" id="img22" />
+      </div>
+    </div>
+    
+    <div id="winner" data-role="popup" data-overlay-theme="a" data-theme="c" style="text-align: center;">
+      <div data-role="header" data-theme="a" class="ui-corner-top">
+        <h1>Game Over</h1>
+      </div>
+      <div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
+        <h3 class="ui-title">Way to go, you solved the puzzle!</h3>
+        <div id="stars">
+          <div data-role="button" data-icon="star" data-theme="c" data-iconpos="notext" data-inline="true" id="star-1"></div>
+          <div data-role="button" data-icon="star" data-theme="c" data-iconpos="notext" data-inline="true" id="star-2"></div>
+          <div data-role="button" data-icon="star" data-theme="c" data-iconpos="notext" data-inline="true" id="star-3"></div>
+        </div>
+        <div id="coupon">
+          <img src="/games/images/coupon3.png" width="200" height="200" /><br />
+          <span id="coupon-value"></span> off Fancy Feast&reg; Gourmet Cat Food
+        </div>
+        <div data-role="controlgroup">
+          <a href="#" data-role="button" data-theme="e">Clip Coupon</a>
+          <a href="#" data-role="button" data-theme="b">Share</a>
+        </div>
+        <a href="/games" data-role="button" data-theme="c">More Games</a> 
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+
+<script>
+  var TIME  = 0;
+  var $TIME = $('#time');
+  $TIME.text(TIME);
+  var TIMER = null;
+  
+  function startTimer(callback) {
+    TIMER = setInterval(function () {
+      TIME++;
+      $TIME.text(TIME);
+    }, 1000);
+  }
+  function stopTimer(timer) { clearInterval(timer); }
+  
+  var MOVES  = 0;
+  var $MOVES = $('#moves');
+  $MOVES.text(MOVES);
+
+  var LAST_SWAP   = EMPTY = { x : 2, y : 2 };
+  var TOTAL_SWAPS = 10;
+  var SWAPS       = 0;
+  var CAN_SWAP    = false;
+  var MOVES       = 0;
+
+  $(document).bind('pageinit', function () {
+    
+    $('#start').bind('vclick', function () {
+      $(this).button('disable');
+      shuffle();
+      startTimer(function () {});
+    });
+    
+    $('.occupied').live('vclick', function() {
+      if (CAN_SWAP) {
+        var coords = $(this).attr('id').substr(5).split('', 2);
+        var from   = {x: coords[0], y: coords[1]};
+        if (isAdjacent(from, EMPTY)) {
+          swap(from ,EMPTY);
+          MOVES += 1;
+          $('#moves').text(MOVES);
+          if (checkComplete()) {
+            stopTimer(TIMER);
+            
+            var stars  = 1;
+            var coupon = '50&cent;';
+            if (TIME < 30 || MOVES < TOTAL_SWAPS + 5) {
+              stars  = 3;
+              coupon = '$2.00';
+            } else if (TIME < 60 && MOVES < TOTAL_SWAPS + 20) {
+              stars  = 2;
+              coupon = '$1.50';
+            }
+            
+            for (i = 1; i <= stars; i++) {
+              $star = $('#star-' + i);
+              $star.attr('data-theme', 'e');
+              $star.addClass('ui-btn-up-e').removeClass('ui-btn-up-c');
+            }
+            
+            $('#coupon-value').html(coupon);
+            
+            $('#winner').popup('open');
+          }
+        }
+      }
+    });
+  });
+
+  function shuffle() {
+    if (SWAPS < TOTAL_SWAPS) {
+      window.setTimeout(function() {
+       swap(randomAdjacent(), EMPTY);
+       SWAPS++;
+       shuffle();
+      }, 450); 
+    }
+    CAN_SWAP = true;
+  }
+
+  function randomAdjacent() {
+    var dX, dY;
+    dX = randomInt(0,1);
+    dY = dX == 0 ? 1 : 0;
+    if (EMPTY.x == 1) {
+      dX = randomNegate(dX);
+    } else if (EMPTY.x == 2) {
+      dX *= -1;
+    }
+    if (EMPTY.y == 1) {
+      dY = randomNegate(dY);
+    } else if (EMPTY.y == 2) {
+      dY *= -1;
+    }
+    var to_return = {x: EMPTY.x + dX, y: EMPTY.y + dY};
+    return ((to_return.x == LAST_SWAP.x) && (to_return.y == LAST_SWAP.y)) ? randomAdjacent() : to_return;
+  }
+
+  function isAdjacent(block1, block2) {
+    if ((Math.abs(block1.x - block2.x) == 1 && block1.y - block2.y == 0) || (Math.abs(block1.y - block2.y) == 1 && block1.x - block2.x == 0)) {
+      return true;
+    }
+    return false;
+  }
+
+  function swap(from, to) {
+    CAN_SWAP = false;
+    
+    var $from = $('#block' + from.x + '' + from.y);
+    var $to   = $('#block' + to.x + '' + to.y);
+    
+    var tween = $from.clone()
+      .attr('id', 'tween' + to.x + '' + to.y)
+      .addClass('puzzle_block tween')
+      .css('top',    $from.offset().top + 'px')
+      .css('left',   ($from.offset().left + 2) + 'px')
+      .css('width',  $from.width() + 'px')
+      .css('height', $from.height() + 'px');
+      
+    $('.puzzle').append(tween);
+    
+    $from.find('img').remove();
+    $from.removeClass('occupied');
+    
+    LAST_SWAP = EMPTY;
+    EMPTY = from;
+    
+    $('#tween' + to.x + '' + to.y).animate(
+      {
+        top  : $to.offset().top,
+        left : $to.offset().left
+      },
+      400,
+      function() {
+        var $to = $('#block' + $(this).attr('id').substr(5));
+        $to.html($(this).html());
+        $to.addClass('occupied');
+        $(this).remove();
+        CAN_SWAP = true;
+      }
+    );
+  }
+
+  function checkComplete() {
+    var retVal = true;
+    for (var i = 0; i < 3; i++) {
+      for (var j = 0; j < 3; j++) {
+        $block = $('#block' + i + ''+ j);
+        if ($block.find('img').length && ($block.find('img').attr('id').substr(3) != (i + ''+ j))) {
+          retVal =  false;
+        }
+      }
+    }
+    return retVal;
+  }
+</script>
+
+</html>

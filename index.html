@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Purina Carnival</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+  <link rel="stylesheet" href="/games/css/application.css" />
+  <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+  <script>
+    $(document).bind('mobileinit', function() {
+      $.mobile.ajaxEnabled = false;
+    });
+  </script>
+  <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+</head>
+<body>
+
+<div data-role="page" data-add-back-btn="true">
+
+  <div data-role="header" data-position="fixed">
+    <h1 class="ui-title" role="heading" aria-level="1">Purina Cats vs. Dogs</h1>
+    <a href="/games" data-icon="logo" data-iconpos="notext">Home</a>
+  </div>
+
+  <div data-role="content" id="content">
+    <img src="/games/images/logo-purina.jpg" id="logo" /><br /><br />
+    
+    <ul data-role="listview">
+      <li data-role="list-divider">Games</li>
+      <li><a href="/games/match.html">
+        <img src="/games/images/match.jpg" />
+        <h3>Pet Flip 'n' Match</h3>
+      </a></li>
+      <li><a href="/games/raining.html">
+        <img src="/games/images/raining.jpg" />
+        <h3>Raining Cats 'n' Dogs</h3>
+      </a></li>
+      <li><a href="/games/puzzle.html">
+        <img src="/games/images/puzzle.jpg" />
+        <h3>Pet Puzzle</h3>
+      </a></li>
+      <li data-role="list-divider">Leaderboards</li>
+      <li><a href="/games/leaderboards/my.html">
+        <img src="/games/images/winston.jpg" />
+        <h3>Winston</h3>
+        <p>Dynamic Dog</p>
+      </a></li>
+      <li><a href="/games/leaderboards/overall.html">
+        <img src="/games/images/brownie.jpg" />
+        <h3>Overall</h3>
+        <p><strong>First Place:</strong> Brownie</p>
+      </a></li>
+      <li><a href="/games/leaderboards/dogs.html">
+        <img src="/games/images/brownie.jpg" />
+        <h3>Dogs</h3>
+        <p><strong>First Place:</strong> Brownie</p>
+      </a></li>
+      <li><a href="/games/leaderboards/cats.html">
+        <img src="/games/images/snowball.jpg" />
+        <h3>Cats</h3>
+        <p><strong>First Place:</strong> Snowball</p>
+      </a></li>
+    </ul>
+    
+  </div>
+  
+</div>
+
+</body>
+</html>

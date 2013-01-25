@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Purina Carnival</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+  <link rel="stylesheet" href="/games/css/application.css" />
+  <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+  <script>
+    $(document).bind('mobileinit', function() {
+      $.mobile.ajaxEnabled = false;
+    });
+  </script>
+  <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+</head>
+<body>
+
+<div data-role="page" data-add-back-btn="true">
+
+  <div data-role="header" data-position="fixed">
+    <h1 class="ui-title" role="heading" aria-level="1">Purina Cats vs. Dogs</h1>
+    <a href="/games" data-icon="logo" data-iconpos="notext">Home</a>
+  </div>
+
+  <div data-role="content" id="content">
+    <div id="purchases">
+      <strong>Points to Date:</strong> 2,181,973
+    </div>
+    <ul data-role="listview">
+      <li><a href="/games/leaderboards/my.html">
+        <img src="/games/images/snowball.jpg" />
+        <h3>1. Snowball</h3>
+        <p>Cool Cat</p>
+      </a></li>
+      <li><a href="/games/leaderboards/my.html">
+        <img src="/games/images/scratchy.jpg" />
+        <h3>2. Scratchy</h3>
+        <p>Kickin' Kitty</p>
+      </a></li>
+    </ul>
+    <!-- Kitten / Feline Hero -->
+  </div>
+  
+</div>
+
+</body>
+</html>

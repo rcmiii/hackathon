@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Purina Carnival</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+  <link rel="stylesheet" href="/games/css/application.css" />
+  <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+  <script>$(document).bind('mobileinit', function() { $.mobile.ajaxEnabled = false; });</script>
+  <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+</head>
+<body>
+
+<div data-role="page" data-theme="c" data-add-back-btn="true">
+
+  <div data-role="header" data-position="fixed">
+    <h1 class="ui-title" role="heading" aria-level="1">Purina Cats vs. Dogs</h1>
+    <a href="/games" data-icon="logo" data-iconpos="notext">Home</a>
+  </div>
+
+  <div data-role="content" id="content">
+    <div id="purchases">
+      <strong>Points to Date:</strong> 4,181,983
+    </div>
+    <ul data-role="listview">
+      <li><a href="/games/leaderboards/my.html">
+        <img src="/games/images/brownie.jpg" />
+        <h3>1. Brownie</h3>
+        <p>Top Dog</p>
+      </a></li>
+      <li><a href="/games/leaderboards/my.html">
+        <img src="/games/images/winston.jpg" />
+        <h3>2. Winston</h3>
+        <p>Dynamic Dog</p>
+      </a></li>
+    </ul>
+  </div>
+  <!-- Puppy / Doggy Hero -->
+  
+</div>
+
+</body>
+</html>

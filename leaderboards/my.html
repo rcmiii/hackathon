@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Purina Carnival</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+  <link rel="stylesheet" href="/games/css/application.css" />
+  <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+  <script>
+    $(document).bind('mobileinit', function() {
+      $.mobile.ajaxEnabled = false;
+    });
+  </script>
+  <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+</head>
+<body>
+
+<div data-role="page" data-add-back-btn="true">
+
+  <div data-role="header" data-position="fixed">
+    <h1 class="ui-title" role="heading" aria-level="1">Purina Cats vs. Dogs</h1>
+    <a href="/games" data-icon="logo" data-iconpos="notext">Home</a>
+  </div>
+
+  <div data-role="content" id="content">
+    <div id="profile">
+      <img src="/games/images/winston.jpg" width="200" style="float:left" />
+      <h1>
+        Winston
+        <div data-inline="true" id="trophies">
+          <div data-role="button" data-icon="skull" data-theme="e" data-iconpos="notext" data-inline="true">&nbsp;</div>
+        </div>
+      </h1>
+      <h2>Dynamic Dog</h2>
+      <table>
+        <tr><td><strong>Points to Date</strong></td><td>1,983</td></tr>
+        <tr><td><strong>Standing for Dogs</strong></td><td>2nd</td></tr>
+        <tr><td><strong>Points Behind Leader</strong></td><td>418</td></tr>
+      </table>
+    </div>
+    <div style="clear:both"><br /><br /></div>
+    <ul data-role="listview">
+      <li data-role="list-divider">Games</li>
+      <li><a href="/games/match.html">
+        <img src="/games/images/match.jpg" />
+        <h3>Pet Flip 'n' Match</h3>
+        <p>
+          <div data-role="button" data-icon="star" data-theme="e" data-iconpos="notext" data-inline="true" id="star-1"></div>
+          <div data-role="button" data-icon="star" data-theme="e" data-iconpos="notext" data-inline="true" id="star-2"></div>
+          <div data-role="button" data-icon="star" data-theme="c" data-iconpos="notext" data-inline="true" id="star-3"></div>
+        </p>
+      </a></li>
+      <li><a href="/games/raining.html">
+        <img src="/games/images/raining.jpg" />
+        <h3>Raining Cats 'n' Dogs</h3>
+        <p>
+          <div data-role="button" data-icon="star" data-theme="e" data-iconpos="notext" data-inline="true" id="star-1"></div>
+          <div data-role="button" data-icon="star" data-theme="e" data-iconpos="notext" data-inline="true" id="star-2"></div>
+          <div data-role="button" data-icon="star" data-theme="e" data-iconpos="notext" data-inline="true" id="star-3"></div>
+        </p>
+      </a></li>
+      <li><a href="/games/puzzle.html">
+        <img src="/games/images/puzzle.jpg" />
+        <h3>Pet Puzzle</h3>
+        <p>
+          <div data-role="button" data-icon="star" data-theme="e" data-iconpos="notext" data-inline="true" id="star-1"></div>
+          <div data-role="button" data-icon="star" data-theme="c" data-iconpos="notext" data-inline="true" id="star-2"></div>
+          <div data-role="button" data-icon="star" data-theme="c" data-iconpos="notext" data-inline="true" id="star-3"></div>
+        </p>
+      </a></li>
+  </div>
+  
+</div>
+
+</body>
+</html>

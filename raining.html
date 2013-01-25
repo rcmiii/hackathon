@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Purina Carnival</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+  <link rel="stylesheet" href="/games/css/application.css" />
+  <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+  <script>
+    $(document).bind('mobileinit', function() {
+      $.mobile.ajaxEnabled = false;
+    });
+  </script>
+  <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+  <script src="/games/js/application.js"></script>
+</head>
+<body>
+
+<div data-role="page" data-add-back-btn="true">
+
+  <div data-role="header" data-position="fixed">
+    <h1 class="ui-title" role="heading" aria-level="1">Purina Cats vs. Dogs</h1>
+    <a href="/games" data-icon="logo" data-iconpos="notext">Home</a>
+  </div>
+
+  <div data-role="content" id="content">
+  
+    <button id="start" data-theme="e">Start</button>
+    
+    <div class="game-info">
+      Score: <span class="score">0</span>&nbsp;&nbsp;&nbsp;
+      Time: <span id="time"></span>
+    </div>
+    
+    <div class="stage"></div>
+    
+    <div id="winner" data-role="popup" data-overlay-theme="a" data-theme="c">
+      <div data-role="header" data-theme="a" class="ui-corner-top">
+        <h1>Game Over</h1>
+      </div>
+      <div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
+        <h3 class="ui-title"><span id="score-adject"></span> job, you scored <span class="score"></span> points!</h3>
+        <div id="stars">
+          <div data-role="button" data-icon="star" data-theme="c" data-iconpos="notext" data-inline="true" id="star-1"></div>
+          <div data-role="button" data-icon="star" data-theme="c" data-iconpos="notext" data-inline="true" id="star-2"></div>
+          <div data-role="button" data-icon="star" data-theme="c" data-iconpos="notext" data-inline="true" id="star-3"></div>
+        </div>
+        <div id="coupon">
+          <img src="/games/images/coupon2.png" width="200" height="200" /><br />
+          <span id="coupon-value"></span> off Mighty Dog&reg; Dog Food
+        </div>
+        <div data-role="controlgroup">
+          <a href="#" data-role="button" data-theme="e">Clip Coupon</a>
+          <a href="#" data-role="button" data-theme="b">Share</a>
+        </div>
+        <a href="/games" data-role="button" data-theme="c">More Games</a>  
+      </div>
+    </div>
+      
+  </div>
+  
+</div>
+
+<script>
+  var TIME  = 30;
+  var $TIME = $('#time');
+  $TIME.text(TIME);
+  var TIMER = null;
+  
+  function startTimer(callback) {
+    TIMER = setInterval(function () {
+      TIME--;
+      $TIME.text(TIME);
+      
+      if (TIME <= 10) { $TIME.addClass('time-under-10'); }
+      if (TIME <= 5)  { $TIME.addClass('time-under-5'); }
+      if (TIME == 0) {
+        stopTimer(TIMER);
+        callback();
+      }
+    }, 1000);
+  }
+  function stopTimer(timer) { clearInterval(timer); }
+
+  var ANIMAL_TYPES = {
+    0: {
+      speed: 2000,
+      value: 50
+    },
+    1: {
+      speed: 1500,
+      value: 100
+    },
+    2: {
+      speed: 1250,
+      value: 150
+    },
+    3: {
+      speed: 1000,
+      value: 200
+    },
+    4: {
+      speed: 800,
+      value: 250
+    },
+  };
+  var ANIMALS        = {};
+  var BUFFER         = 150;
+  var FREQUENCY      = 1000; //timeout to drop next animal
+  var COUPON_SPEED   = 600;
+  var COUPON_DROPPED = false;
+  var COUPON_CAUGHT  = false;
+  var SCORE          = 0;
+  var DROP_TIMEOUT;
+  
+  $(document).bind('pageinit', function () {
+    
+    $('#start').bind('vclick', function () {
+      $(this).button('disable');
+      
+      startTimer(function() {
+        clearTimeout(DROP_TIMEOUT);
+        var stars  = 1;
+        var coupon = '50&cent;';
+        var adject = 'Nice';
+
+        if (SCORE > 3000) {
+          stars  = 2;
+          coupon = '$1.50';
+          adject = 'Great';
+        } if (SCORE > 6000) {
+          stars  = 3;
+          coupon = '$2.00';
+          adject = 'Amazing';
+        }
+        for (i = 1; i <= stars; i++) {
+          $star = $('#star-' + i);
+          $star.attr('data-theme', 'e');
+          $star.addClass('ui-btn-up-e').removeClass('ui-btn-up-c');
+        }
+        $('#coupon-value').html(coupon);
+        $('#score-adject').text(adject);
+        $('#winner').popup('open');
+      });
+      
+      init();
+    });
+    
+  });
+
+  function init() {
+    $('.stage').append('<div id="catcher"></div>');
+    $('.stage').bind('vmousemove', function(e){
+      var catcherOffset = $('#catcher').offset().left - $('.stage').offset().left;
+      $('#catcher').css('left', e.pageX - $('.stage').offset().left - $('#catcher').width()/2);
+    });
+    
+    dropAnimals(FREQUENCY);
+    
+    collisionCheck = window.setInterval(function(){
+      $.each(ANIMALS, function(x, animal) {
+        if(animal.inPlay){
+          if(checkCollision($('#animal_' + animal.id))) {
+            SCORE += animal.value;
+            $('.score').text(SCORE);
+            $('#animal_' + animal.id).remove();
+            animal.inPlay = false;
+          }
+        }
+      });
+    }, 32);
+  }
+
+  function dropAnimals() {
+    var itr = Object.keys(ANIMALS).length;
+    var newAnimal = {
+      id: itr, 
+      type: randomInt(0, 4),
+      inPlay: true
+    }
+    newAnimal.speed = ANIMAL_TYPES[newAnimal.type].speed;
+    newAnimal.value = ANIMAL_TYPES[newAnimal.type].value;
+    ANIMALS[itr] = newAnimal;
+    $('.stage').append('<div class="animal animal'+ newAnimal.type +'" id="animal_'+ newAnimal.id +'" style="top: '+ $('.stage').offset().top +'"></div>');
+    var x = randomInt($('.stage').offset().left, $('.stage').offset().left + $('.stage').width() -  $('#animal_' + newAnimal.id).width());
+
+    $('#animal_' + newAnimal.id).css('left', x);
+    $('#animal_' + newAnimal.id).css('top', $('.stage').offset().top + $('.stage').height() - $('#animal_' + newAnimal.id).height() / 2);
+    
+    setTimeout(function(id){
+      $('#animal_' + id).remove();
+      $.each(ANIMALS, function(x, animal){
+        if(animal.id == parseInt(id)) {
+          animal.inPlay = false;
+        }
+      });
+    }, newAnimal.speed, newAnimal.id);
+    
+    DROP_TIMEOUT = setTimeout(dropAnimals, FREQUENCY);
+    FREQUENCY = FREQUENCY > 200 ? FREQUENCY -= 25 : FREQUENCY;
+  }
+
+  function checkCollision($animal) {
+    var animalCenter = {};
+    animalCenter.x = $animal.offset().left + $animal.width()/2;
+    animalCenter.y = $animal.offset().top + $animal.height()/2;
+    if (animalCenter.x > $('#catcher').offset().left && animalCenter.x < $('#catcher').offset().left + $('#catcher').width()
+      && animalCenter.y > $('#catcher').offset().top && animalCenter.y < $('#catcher').offset().top + $('#catcher').height()) {
+      return true;
+    }
+    return false;
+  }
+</script>
+  
+</body>
+</html>
