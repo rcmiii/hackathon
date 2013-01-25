@@ -20,7 +20,7 @@
 
   <div data-role="header" data-position="fixed">
     <h1 class="ui-title" role="heading" aria-level="1">Purina: Cats vs. Dogs</h1>
-    <a href="/games" data-icon="logo" data-iconpos="notext">Home</a>
+    <a href="/games" data-icon="logo">Home</a>
   </div>
 
   <div data-role="content" id="content">
@@ -55,7 +55,7 @@
       <div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
         <h3 class="ui-title">Sorry, your time has expired. Better luck next time!</h3>
         <div data-role="controlgroup">
-          <a href="/games/memory.html" data-role="button" data-theme="b">Practice</a>    
+          <a href="/games/match.html" data-role="button" data-theme="b">Practice</a>    
           <a href="/games" data-role="button" data-theme="c">More Games</a>
         </div>  
       </div>
@@ -207,7 +207,9 @@
               
               $('#coupon-value').html(coupon);
               
-              $('#winner').popup('open');
+              setTimeout(function () {
+                $('#winner').popup('open');
+              }, 500);
             }
           } else {
             setTimeout(function () {

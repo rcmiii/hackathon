@@ -20,7 +20,7 @@
 
   <div data-role="header" data-position="fixed">
     <h1 class="ui-title" role="heading" aria-level="1">Purina: Cats vs. Dogs</h1>
-    <a href="/games" data-icon="logo" data-iconpos="notext">Home</a>
+    <a href="/games" data-icon="logo">Home</a>
   </div>
 
   <div data-role="content" id="content">
@@ -64,7 +64,7 @@
 
 <script>
   document.ontouchmove = function(e) {e.preventDefault()}; //prevent annoying scrolling on ipad
-  var TIME  = 30;
+  var TIME  = 15;
   var $TIME = $('#time');
   $TIME.text(TIME);
   var TIMER = null;
@@ -142,7 +142,10 @@
         }
         $('#coupon-value').html(coupon);
         $('#score-adject').text(adject);
-        $('#winner').popup('open');
+        
+        setTimeout(function () {
+          $('#winner').popup('open');
+        }, 500);
       });
       
       init();
