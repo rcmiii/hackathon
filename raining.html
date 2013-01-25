@@ -121,6 +121,7 @@
       $(this).button('disable');
       
       startTimer(function() {
+        document.ontouchmove = function(e) {return true};
         clearTimeout(DROP_TIMEOUT);
         var stars  = 1;
         var coupon = '50&cent;';
